@@ -94,25 +94,21 @@ h1 {
   display: flex;
 }
 
-#Start,#Rules {
-    font-size:x-large;
-    font-weight: bold;
-    position: absolute;
-    width: 50%;
-    height: auto;
-    min-height: 10%;
-    padding-bottom: 1%;
-    padding-top: 1%;
-    border-radius: 50px;
-    border-color: #ffe919;
-    background-color: #000;
-    color: #ffe919;
+input {  
+  font-size:x-large;
+  font-weight: bold;
+  position: absolute;
+  width: 50%;
+  height: auto;
+  min-height: 10%;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  border-radius: 50px;
+  border-color: #ffe919;
+  background-color: #000;
+  color: #ffe919;
 }
-#Start:hover {
-  background-color: #ffe919;
-  color: #000;
-}
-#Rules:hover {
+input:hover {
   background-color: #ffe919;
   color: #000;
 }
