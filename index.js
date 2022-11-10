@@ -115,6 +115,66 @@ function start() {
 }
 
 
+function startDebutant() {
+    //var data = await response.json();
+      //console.log(data);
+    const test = "ijjnfzejhbdzjhb";
+    startJeu(test);
+}
+
+
+function startJeu(quiz) {
+
+    document.getElementById("titre").innerText = "Question 1";
+    console.log(document.getElementById("titre").innerText);
+
+    debutant = document.getElementById("debutant");
+    confirme = document.getElementById("confirme");
+    expert = document.getElementById("expert");
+    buttons.removeChild(debutant);
+    buttons.removeChild(confirme);
+    buttons.removeChild(expert);
+
+    rep1 = document.createElement("input");
+    rep2 = document.createElement("input");
+    rep3 = document.createElement("input");
+    rep4 = document.createElement("input");
+    rep1.setAttribute("id", "rep1");
+    rep2.setAttribute("id", "rep2");
+    rep3.setAttribute("id", "rep3");
+    rep4.setAttribute("id", "rep4");
+
+    confirme.setAttribute("name", "Confirmé");
+    expert.setAttribute("name", "Expert");
+    debutant.setAttribute("value", "Débutant");
+    confirme.setAttribute("value", "Confirmé");
+    expert.setAttribute("value", "Expert");
+    debutant.setAttribute("type", "button");
+    confirme.setAttribute("type", "button");
+    expert.setAttribute("type", "button");
+    debutant.setAttribute("onclick", "startDebutant()");
+    confirme.setAttribute("onclick", "startConfirme()");
+    expert.setAttribute("onclick", "startExpert()");
+
+    let tailleEcrant = window.innerWidth;
+    let margeGauchebutton = (tailleEcrant / 2) - (tailleEcrant / 4);
+    debutant.style.marginLeft = margeGauchebutton + "px";
+    confirme.style.marginLeft = margeGauchebutton + "px";
+    expert.style.marginLeft = margeGauchebutton + "px";
+    
+    debutant.style.marginTop = screen.availHeight * 0.33 + "px";
+    confirme.style.marginTop = screen.availHeight * 0.48 + "px";
+    expert.style.marginTop = screen.availHeight * 0.63 + "px";
+
+    buttons.appendChild(debutant);
+    buttons.appendChild(confirme);
+    buttons.appendChild(expert);
+
+    console.log("je poaseeoihddaideinhe");
+
+}
+
+
 document.addEventListener("DOMContentLoaded", showAccueil);
 window.onresize = resizepage;
 
