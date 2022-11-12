@@ -37,18 +37,22 @@ const home = () => {
     try {
         buttons.removeChild(document.getElementById("Start"));
         buttons.removeChild(document.getElementById("Rules"));
-    } catch (error) { } 
+    } catch (error) { }
     try {
         buttons.removeChild(document.getElementById("debutant"));
         buttons.removeChild(document.getElementById("confirme"));
         buttons.removeChild(document.getElementById("expert"));
-    } catch (error) { } 
+    } catch (error) { }
     try {
         buttons.removeChild(document.getElementById("rep1"));
         buttons.removeChild(document.getElementById("rep2"));
         buttons.removeChild(document.getElementById("rep3"));
         buttons.removeChild(document.getElementById("rep4"));
     } catch (error) { }
+
+
+    document.getElementById("titre").innerText = "Star Wars Quiz";
+    document.getElementById("numero").innerText = "";
 
     let imageLogo = document.getElementById("imageAcc");
     imageLogo.setAttribute("src", "./assets/img/Quiz-Star-wars.png");
@@ -141,6 +145,20 @@ const resizepage = () => {
 
 }
 
+const resizeImage = () =>{
+
+    let tailleEcrant = screen.availWidth;
+    let hauteurEcrant = screen.height;
+    image = document.getElementById("imageAcc");
+    console.log("tailleEcrant " + tailleEcrant);
+    let widthImage = image.clientWidth;
+    console.log("widthImage " + widthImage);
+    let margeGauche = (tailleEcrant - widthImage) / 2;
+    console.log("marge " + margeGauche);
+    image.style.marginLeft = margeGauche + "px";
+
+}
+
 function start() {
 
     buttonStart = document.getElementById("Start");
@@ -183,6 +201,7 @@ function start() {
 }
 
 function startDebutant() {
+    niveau = "debutant";
     fetch("./quiz.json")
         .then(response => {
             return response.json();
@@ -193,15 +212,24 @@ function startDebutant() {
         }).then(response => {
             startJeu(response);
         });
-
-
 }
 
-let quiz = "";
+let quiz = [];
+let niveau = "debutant";
 
 function startJeu(quest) {
 
-    quiz = quest;
+    console.log(quiz);
+    quest.forEach(e =>
+        quiz.push({
+            id: e.id,
+            question: e.question,
+            propositions: e.propositions,
+            réponse: e.réponse,
+            anecdote: e.anecdote
+        })
+    );
+    console.log(quiz[0].propositions);
 
     document.getElementById("titre").innerText = "Question";
     document.getElementById("numero").innerText = "1";
@@ -213,10 +241,9 @@ function startJeu(quest) {
     buttons.removeChild(confirme);
     buttons.removeChild(expert);
 
-
     let imageQuest = document.getElementById("imageAcc");
     imageQuest.setAttribute("src", "./assets/img/debutant/q1.jpg");
-    resizepage();
+    imageQuest.style.maxWidth = screen.width - 6 + "px";
 
     rep1 = document.createElement("input");
     rep2 = document.createElement("input");
@@ -227,22 +254,22 @@ function startJeu(quest) {
     rep3.setAttribute("id", "rep3");
     rep4.setAttribute("id", "rep4");
 
-    rep1.setAttribute("value", "Débutant");
-    rep2.setAttribute("value", "Confirmé");
-    rep3.setAttribute("value", "Confirmé");
-    rep4.setAttribute("value", "Confirmé");
+    rep1.setAttribute("value", quiz[0].propositions[0]);
+    rep2.setAttribute("value", quiz[0].propositions[1]);
+    rep3.setAttribute("value", quiz[0].propositions[2]);
+    rep4.setAttribute("value", quiz[0].propositions[3]);
 
     rep1.setAttribute("type", "button");
     rep2.setAttribute("type", "button");
     rep3.setAttribute("type", "button");
     rep4.setAttribute("type", "button");
 
-    rep1.setAttribute("onclick", "startDebutant()");
-    rep2.setAttribute("onclick", "startConfirme()");
-    rep3.setAttribute("onclick", "startExpert()");
-    rep4.setAttribute("onclick", "startExpert()");
+    rep1.setAttribute("onclick", "verifReponse(1)");
+    rep2.setAttribute("onclick", "verifReponse(2)");
+    rep3.setAttribute("onclick", "verifReponse(3)");
+    rep4.setAttribute("onclick", "verifReponse(4)");
 
-    let tailleEcrant = window.innerWidth;
+    let tailleEcrant = screen.width;
     let margeGauchebutton = (tailleEcrant / 2) - (tailleEcrant / 4);
     rep1.style.marginLeft = margeGauchebutton + "px";
     rep2.style.marginLeft = margeGauchebutton + "px";
@@ -259,12 +286,43 @@ function startJeu(quest) {
     buttons.appendChild(rep3);
     buttons.appendChild(rep4);
 
+    resizeImage();
+}
+
+function questionSuivante() {
+
+    let id = document.getElementById("numero").innerText;
+
+    rep1 = document.getElementById("rep1");
+    rep2 = document.getElementById("rep2");
+    rep3 = document.getElementById("rep3");
+    rep4 = document.getElementById("rep4");
+
+    rep1.setAttribute("value", quiz[id].propositions[0]);
+    rep2.setAttribute("value", quiz[id].propositions[1]);
+    rep3.setAttribute("value", quiz[id].propositions[2]);
+    rep4.setAttribute("value", quiz[id].propositions[3]);
+
+    let imageQuest = document.getElementById("imageAcc");
+    imageQuest.setAttribute("src", "./assets/img/" + niveau + "/q" + id + ".jpg");
+    
+    resizeImage();
 
 }
 
-function QuestionSuivante() {
+function verifReponse(numRep) {
 
-    console.log(jsonData);
+    let id = document.getElementById("numero").innerText;
+    idRep = "rep" + numRep;
+    console.log(document.getElementById(idRep).value);
+    console.log(quiz[id - 1].réponse);
+    if (quiz[id - 1].réponse === document.getElementById(idRep).value){
+        console.log("vrais");
+    }
+
+    id = id - 1 + 2;
+    document.getElementById("numero").innerText = id;
+
 }
 
 
