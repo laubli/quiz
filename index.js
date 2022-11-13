@@ -26,6 +26,9 @@ const showAccueil = () => {
     buttonRules.style.marginLeft = margeGauchebutton + "px";
     buttonRules.style.marginTop = screen.availHeight * 0.53 + "px";
 
+    buttonStart.style.minHeight = "10%";
+    buttonRules.style.minHeight = "10%";
+
     if (tailleEcrant < 1000) {
         margeGauchebutton = (tailleEcrant / 2) - 175;
         buttonStart.style.marginLeft = margeGauchebutton + "px";
@@ -53,6 +56,9 @@ const home = () => {
         buttons.removeChild(document.getElementById("rep2"));
         buttons.removeChild(document.getElementById("rep3"));
         buttons.removeChild(document.getElementById("rep4"));
+    } catch (error) { }
+    try {
+        buttons.removeChild(document.getElementById("question"));
     } catch (error) { }
 
 
@@ -89,6 +95,9 @@ const home = () => {
     buttonRules.style.marginLeft = margeGauchebutton + "px";
     buttonRules.style.marginTop = screen.availHeight * 0.53 + "px";
 
+    buttonStart.style.minHeight = "10%";
+    buttonRules.style.minHeight = "10%";
+
     if (tailleEcrant < 1000) {
         margeGauchebutton = (tailleEcrant / 2) - 175;
         buttonStart.style.marginLeft = margeGauchebutton + "px";
@@ -97,6 +106,8 @@ const home = () => {
 
     buttons.appendChild(buttonStart);
     buttons.appendChild(buttonRules);
+
+    imageLogo.style.height = "25%";
 
 };
 
@@ -170,10 +181,11 @@ const resizepage = () => {
             rep3.style.marginLeft = margeGauchebutton + "px";
             rep4.style.marginLeft = margeGauchebutton * 2 + tailleButton + "px";
 
-            rep1.style.marginTop = hauteurEcrant * 0.45 + "px";
-            rep2.style.marginTop = hauteurEcrant * 0.45 + "px";
-            rep3.style.marginTop = hauteurEcrant * 0.60 + "px";
-            rep4.style.marginTop = hauteurEcrant * 0.60 + "px";
+            question.style.marginTop = tailleEcrant * 0.21 + "px";
+            rep1.style.marginTop = tailleEcrant * 0.25 + "px";
+            rep2.style.marginTop = tailleEcrant * 0.25 + "px";
+            rep3.style.marginTop = tailleEcrant * 0.32 + "px";
+            rep4.style.marginTop = tailleEcrant * 0.32 + "px";
 
             imageQuest.style.height = window.innerHeight * 0.4 + "px";
         }
@@ -189,9 +201,21 @@ const resizepage = () => {
             suivant = document.getElementById("suivant");
             suivant.style.marginTop = hauteurEcrant - (hauteurEcrant * 0.27) + "px";
             suivant.style.marginLeft = tailleEcrant - 400 + "px";
-            suivant.style.width ="100px";
+            suivant.style.width = "100px";
         }
     } catch (error) { }
+
+    try {
+        suivant = document.getElementById("suivant");
+        anecdote = document.getElementById("anecdote");
+        anecdote.style.width = "70%";
+        anecdote.style.marginTop = window.innerHeight - (window.innerHeight * 0.18) + "px";
+        anecdote.setAttribute("rows", "3");
+        suivant.style.marginTop = window.innerHeight - (window.innerHeight * 0.18) + "px";
+        suivant.style.marginLeft = window.innerWidth - 400 + "px";
+        suivant.style.width = "100px";
+    } catch (error) { }
+
 
 }
 
@@ -235,6 +259,10 @@ function start() {
     confirme.setAttribute("onclick", "startConfirme()");
     expert.setAttribute("onclick", "startExpert()");
 
+    debutant.style.minHeight = "10%";
+    confirme.style.minHeight = "10%";
+    expert.style.minHeight = "10%";
+
     let tailleEcrant = screen.availWidth;
     let margeGauchebutton = (tailleEcrant / 2) - (tailleEcrant / 4);
     debutant.style.marginLeft = margeGauchebutton + "px";
@@ -271,6 +299,34 @@ function startDebutant() {
         });
 }
 
+function startConfirme() {
+    niveau = "confirme";
+    fetch("./quiz.json")
+        .then(response => {
+            return response.json();
+        }).then(response => {
+            return response.fr;
+        }).then(response => {
+            return response.confirmé;
+        }).then(response => {
+            startJeu(response);
+        });
+}
+
+function startExpert() {
+    niveau = "expert";
+    fetch("./quiz.json")
+        .then(response => {
+            return response.json();
+        }).then(response => {
+            return response.fr;
+        }).then(response => {
+            return response.expert;
+        }).then(response => {
+            startJeu(response);
+        });
+}
+
 let quiz = [];
 let niveau = "debutant";
 
@@ -301,17 +357,20 @@ function startJeu(quest) {
     let imageQuest = document.getElementById("imageAcc");
     imageQuest.setAttribute("src", "./assets/img/debutant/q1.jpg");
     imageQuest.style.maxWidth = screen.width - 6 + "px";
+    imageQuest.style.marginTop = "10px";
 
-    
-    question = document.createElement("input");
+
+    question = document.createElement("textarea");
     question.setAttribute("id", "question");
-    question.setAttribute("value", quiz[0].question);
+    question.innerText = quiz[0].question;
     question.style.paddingTop = "0px";
     question.style.paddingBottom = "0px";
     question.style.border = "none";
     question.style.width = "90%";
     question.style.marginLeft = "5%";
     question.disabled = true;
+    question.style.fontSize = "x-large";
+    question.style.minHeight = "5%";
 
     rep1 = document.createElement("input");
     rep2 = document.createElement("input");
@@ -345,11 +404,19 @@ function startJeu(quest) {
         rep3.style.marginLeft = margeGauchebutton + "px";
         rep4.style.marginLeft = margeGauchebutton + "px";
 
-        question.style.marginTop = screen.availHeight * 0.25 + "px";
-        rep1.style.marginTop = screen.availHeight * 0.30 + "px";
-        rep2.style.marginTop = screen.availHeight * 0.43 + "px";
-        rep3.style.marginTop = screen.availHeight * 0.56 + "px";
-        rep4.style.marginTop = screen.availHeight * 0.69 + "px";
+        question.style.marginTop = screen.availHeight * 0.28 + "px";
+        question.setAttribute("rows", "2");
+
+        rep1.style.marginTop = screen.availHeight * 0.35 + "px";
+        rep2.style.marginTop = screen.availHeight * 0.46 + "px";
+        rep3.style.marginTop = screen.availHeight * 0.57 + "px";
+        rep4.style.marginTop = screen.availHeight * 0.68 + "px";
+
+        rep1.style.fontSize = "large";
+        rep2.style.fontSize = "large";
+        rep3.style.fontSize = "large";
+        rep4.style.fontSize = "large";
+
     } else {
 
         tailleEcrant = window.innerWidth;
@@ -364,12 +431,17 @@ function startJeu(quest) {
         rep2.style.marginLeft = margeGauchebutton * 2 + tailleButton + "px";
         rep3.style.marginLeft = margeGauchebutton + "px";
         rep4.style.marginLeft = margeGauchebutton * 2 + tailleButton + "px";
-        
-        question.style.marginTop = screen.availHeight * 0.35 + "px";
-        rep1.style.marginTop = screen.availHeight * 0.45 + "px";
-        rep2.style.marginTop = screen.availHeight * 0.45 + "px";
-        rep3.style.marginTop = screen.availHeight * 0.60 + "px";
-        rep4.style.marginTop = screen.availHeight * 0.60 + "px";
+
+        question.style.marginTop = tailleEcrant * 0.21 + "px";
+        rep1.style.marginTop = tailleEcrant * 0.25 + "px";
+        rep2.style.marginTop = tailleEcrant * 0.25 + "px";
+        rep3.style.marginTop = tailleEcrant * 0.32 + "px";
+        rep4.style.marginTop = tailleEcrant * 0.32 + "px";
+
+        rep1.style.height = "10%";
+        rep2.style.height = "10%";
+        rep3.style.height = "10%";
+        rep4.style.height = "10%";
 
         imageQuest.style.height = window.innerHeight * 0.4 + "px";
     }
@@ -392,6 +464,8 @@ function questionSuivante() {
     try {
         suivant = document.getElementById("suivant");
         buttons.removeChild(suivant);
+        anecdote = document.getElementById("anecdote");
+        buttons.removeChild(anecdote);
     } catch (error) { }
 
 
@@ -426,24 +500,43 @@ function verifReponse(numRep) {
     console.log(document.getElementById(idRep).value);
     console.log(quiz[id - 1].réponse);
 
+    anecdote = document.createElement("textarea");
+    anecdote.setAttribute("id", "anecdote");
+    anecdote.innerText = quiz[id - 1].anecdote;
+    anecdote.style.paddingTop = "0px";
+    anecdote.style.paddingBottom = "0px";
+    anecdote.style.border = "none";
+    anecdote.style.width = "90%";
+    anecdote.style.marginLeft = "5%";
+    anecdote.disabled = true;
+    anecdote.style.fontSize = "x-large";
+    anecdote.style.minHeight = "5%";
+    anecdote.style.color = "#8f8f8f";
+
     suivant = document.createElement("input");
     suivant.setAttribute("id", "suivant");
     suivant.setAttribute("value", "Suivant");
     suivant.setAttribute("type", "button");
     suivant.setAttribute("onclick", "questionSuivante()");
     if (screen.availWidth < 1000) {
+        anecdote.style.marginTop = screen.availHeight - (screen.availHeight * 0.18) + "px";
+        anecdote.setAttribute("rows", "3");
         suivant.style.marginTop = screen.availHeight - (screen.availHeight * 0.18) + "px";
         let margeGauchebutton = (screen.width / 2) - 175;
         suivant.style.marginLeft = margeGauchebutton + "px";
     } else {
+        anecdote.style.width = "60%";
+        anecdote.style.marginTop = window.innerHeight - (window.innerHeight * 0.18) + "px";
+        anecdote.setAttribute("rows", "3");
         suivant.style.marginTop = window.innerHeight - (window.innerHeight * 0.18) + "px";
         suivant.style.marginLeft = window.innerWidth - 400 + "px";
-        suivant.style.width ="100px";
+        suivant.style.width = "100px";
     }
 
 
 
     suivant.style.marginRight = "0px";
+    buttons.appendChild(anecdote);
     buttons.appendChild(suivant);
 
     if (quiz[id - 1].réponse === document.getElementById(idRep).value) {

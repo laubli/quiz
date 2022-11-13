@@ -100,7 +100,7 @@ input {
   position: absolute;
   width: 50%;
   height: auto;
-  min-height: 10%;
+  min-height: 8%;
   min-width: 350px;
   padding-bottom: 1%;
   padding-top: 1%;
@@ -118,7 +118,24 @@ input:disabled{
   color: #ffe91990;
 }
 
-#question:disabled{
+textarea {  
+  font-size:x-large;
+  font-weight: bold;
+  position: absolute;
+  width: 50%;
+  height: auto;
+  min-height: 8%;
+  min-width: 350px;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  border-radius: 50px;
+  border-color: #ffe919;
+  background-color: #000;
+  color: #ffe919;
+  resize: none;
+}
+
+textarea:disabled{
   background-color: #000;
   color: #ffe919;
 }
